@@ -18,7 +18,7 @@ model tb_user {
 }
 
 model tb_code_account {
-  id      String  @id(map: "tb_confirm_account_pkey") @db.Uuid
+  id      String  @id @unique(map: "tb_confirm_account_pkey") @db.Uuid
   code    Int
   user_id String  @db.Uuid
   tb_user tb_user @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tb_confirm_account_tb_user")

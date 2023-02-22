@@ -33,6 +33,19 @@ class CreateUserUseCase {
 
     const code = getRandomInt(100000, 999999);
 
+    console.log(code);
+
+    const validEmail =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    if (!email.match(validEmail)) {
+      throw new AppResponse({
+        message: "Invalid email",
+        result: "error",
+        status: 400,
+      });
+    }
+
     if (password !== confirmPassword) {
       throw new AppResponse({
         message: "Confirm password is different of password",
@@ -95,6 +108,12 @@ class CreateUserUseCase {
       email,
       name,
       password,
+    });
+
+    await this.confirmCodeRepository.create({
+      id: this.uuidProvider.create(),
+      user_id: response.id,
+      code,
     });
 
     await this.emailProvider.sendConfirmAccount(email, code, "Verify code.");

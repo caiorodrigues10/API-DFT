@@ -11,6 +11,7 @@ class UserRepository implements IUserRepository {
     return prisma.tb_user.findMany({
       where: {
         reg_active: true,
+        code_active: true
       },
     });
   }
@@ -28,6 +29,17 @@ class UserRepository implements IUserRepository {
       where: {
         email: value,
       },
+    });
+  }
+
+  async updateCodeUser(value: string): Promise<User | null> {
+    return prisma.tb_user.update({
+      where: {
+        id: value,
+      },
+      data: {
+        code_active: true
+      }
     });
   }
 }
